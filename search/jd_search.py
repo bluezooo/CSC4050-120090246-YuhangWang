@@ -138,7 +138,7 @@ class CookieLogin():
 
 if __name__ == '__main__':
     login = CookieLogin()
-    # login.getcookie()
+    login.getcookie()
     login.readcookie()
     login.search_keywords("电脑")
     login.search_result_parse(pagenum=9)

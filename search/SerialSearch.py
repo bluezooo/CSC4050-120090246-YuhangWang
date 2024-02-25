@@ -86,27 +86,29 @@ class SerialSearch():
         )#等到30个商品都加载出来
 
 
-        js = "return action=document.body.scrollHeight"
-        height = 0
-        new_height = mydriver.execute_script(js)
-        while height < new_height:
-            # 将滚动条调整至页面底部
-            for i in range(height, new_height, 500):
-                mydriver.execute_script('window.scrollTo(0, {})'.format(i))
-                time.sleep(1)
-            height = new_height
-            time.sleep(0.1)
-            new_height = mydriver.execute_script(js)
-        for time1 in range(5):
-            try:
-                reload = WebDriverWait(mydriver, (time1+1)*5).until(EC.presence_of_element_located((By.CSS_SELECTOR, "#J_scroll_loading > span > a")))
-                reload.click()
-                break
-            except:
-                continue
-        WebDriverWait(mydriver,20).until(
-            EC.presence_of_all_elements_located((By.CSS_SELECTOR, "#J_goodsList > ul > li:nth-child(60)"))
-        )#等到60个商品都加载出来
+        # js = "return action=document.body.scrollHeight"
+        # height = 0
+        # new_height = mydriver.execute_script(js)
+        # while height < new_height:
+        #     # 将滚动条调整至页面底部
+        #     for i in range(height, new_height, 500):
+        #         mydriver.execute_script('window.scrollTo(0, {})'.format(i))
+        #         time.sleep(1)
+        #     height = new_height
+        #     time.sleep(0.1)
+        #     new_height = mydriver.execute_script(js)
+        # for time1 in range(5):
+        #     try:
+        #         reload = WebDriverWait(mydriver, (time1+1)*5).until(EC.presence_of_element_located((By.CSS_SELECTOR, "#J_scroll_loading > span > a")))
+        #         reload.click()
+        #         break
+        #     except:
+        #         continue
+        # WebDriverWait(mydriver,20).until(
+        #     EC.presence_of_all_elements_located((By.CSS_SELECTOR, "#J_goodsList > ul > li:nth-child(60)"))
+        # )#等到60个商品都加载出来?????????????????????????
+        
+        
         # WebDriverWait(mydriver, 10).until(
         #     EC.text_to_be_present_in_element((By.CSS_SELECTOR, "#J_bottomPage > span.p-num > a.curr"), str(page_number))
         # )# 判断翻页成功,高亮的按钮数字与设置的页码一样
@@ -187,7 +189,7 @@ class SerialSearch():
 
     def save_to_excel(self, format = 'xlsx', combineURL = 1, filename = 'jd', sort = 1):
         '''format: xlsx or csv
-            combineURL: 1: generate HYPERLINK in the 商品 column     0: generate a single URL column like "https://item.jd.com/100077643920.html" with its HYPERLINK attached, and the number in this link is the product ID.
+            combineURL: 1: generate HYPERLINK in the Items column     0: generate a single URL column like "https://item.jd.com/100077643920.html" with its HYPERLINK attached, and the number in this link is the product ID.
             filename: the file name, no need to add suffixes like "xlsx"
             sort: 1: by price, descending   2: by price, ascending     3: by comments, descending   4: by comments, ascending'''
         
