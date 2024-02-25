@@ -1,6 +1,6 @@
 # Store website URL, change this 
 # url = "https://mall.jd.com/view_search-933997-0-99-1-24-1.html"
-url = "https://mall.jd.com/view_search-2746730-23013324-99-1-20-1.html" 
+# url = "https://mall.jd.com/view_search-2746730-23013324-99-1-20-1.html" 
 # url = input("Please input the store url")
 
 
@@ -36,11 +36,15 @@ def get_page_items():
 			plus.append(0)
 		if comments.endswith("万"):
 			comments = int(comments[:-1])*10000
-		commentsCount.append(int(comments))
-		href_list.append(href)
+		try:
+			commentsCount.append(int(comments))
+			href_list.append(href)
+		except:
+			print('error in converting int')
+      
   
 
-def get_all_items():
+def get_all_items(url):
 	driver.get(url)
 	get_page_items()
 	number_of_pages = len(driver.find_elements(By.CSS_SELECTOR, '#J_GoodsList > div > a')) + 1
@@ -73,6 +77,6 @@ def save(filename, format):
         print('Invalid Format')
 
 # Main
-get_all_items()
-save(filename = "items", format= 'txt')
+get_all_items(url = "https://mall.jd.com/view_search-933997-0-99-1-24-1.html")
+save(filename = "items", format= 'csv')
 print("Total number of items: ", len(href_list))
