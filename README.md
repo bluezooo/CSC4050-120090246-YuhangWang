@@ -116,7 +116,7 @@ For each url, there will be a file named by adding its index to the end of the `
 
 ##### Expected outputs
 
-<img src="D:\OneDrive - CUHK-Shenzhen\CUHKSZ7\Codes\jd\images\ex2.png" alt="ex2" style="zoom: 67%;" />
+<img src="images\ex2.png" alt="ex2" style="zoom: 67%;" />
 
 
 
