@@ -38,3 +38,44 @@
 ### SerialSearch.py
 
 ##### Parameter Details
+
+- SerialSearch(keyword = "电脑", login_status=1, pagenum=10, no_repeat=1)
+  - keyword: the word you want to search in the homepage search box 
+  - login_status: As stated above in `MyDriver.py`
+  - pagenum: the total page of items you want to get&load
+  - no_repeat: avoid repeat
+- search.**save_to_excel**(combineURL=1, format='xlsx', filename='jd_serial', sort = 3)
+  - combineURL: 
+    - 1: generate HYPERLINK in the `Items` column 
+    - 0: generate a single URL column like "https://item.jd.com/100077643920.html" with its HYPERLINK attached, and the number in this link is the product ID.
+  - format: xlsx or csv
+  - filename: the file name, no need to add suffixes like "xlsx"
+  - sort: 
+    - 1: by price, descending  
+    - 2: by price, ascending   
+    - 3: by comments, descending  
+    - 4: by comments, ascending
+
+### ParallelSearch.py
+
+##### Details
+
+1. Assinging each thread with a specific page in the result pages, combine all the threads into **one** file.
+
+2. Inherit from the previous class `SerialSearch`.
+3. Using `Semaphore` and `Lock`to manage the shared memory.
+
+### Existing Unsolved Problem
+
+In each page, there are 60 items, but there are only 30 items loaded when getting the url.
+
+When you manually scroll to the middle, the page automatically load the other half, I've tried to let the scrolling down process as slow as possible or click the `refresh` button, but the other half always didn't load successfully.
+
+Therefore, when I tried **Explicit Wait** to load all the items in a page, the program gives an error.
+
+### jd_search.py
+
+A light weight version
+
+If you do not want the above error to trouble you, just use this python file. This file also cannot load the other half, yet since it uses **Implicit Wait**, there are no bugs when running.
+
