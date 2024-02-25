@@ -95,7 +95,11 @@ Using `Semaphore` to manage the shared memory
 ```
 threading; time; selenium; pandas
 ```
+##### Example usage
 
+```python
+python items_threading.py
+```
 ##### Things to change
 
 ```python
