@@ -25,7 +25,10 @@ selenium; time; pandas
 ```
 
 ##### Example Usage
-
+```python
+python items.py
+```
+In this python file, change these two line in the end for your search.
 ```python
 get_all_items(url = "https://mall.jd.com/view_search-933997-0-99-1-24-1.html")
 save(filename = "items", format= 'csv')
