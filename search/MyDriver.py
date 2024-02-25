@@ -19,7 +19,7 @@ class MyDriver():
         else:
             option = webdriver.ChromeOptions()
             # Not load pics
-            # option.add_experimental_option('prefs', {'profile.managed_default_content_settings.images': 2})
+            option.add_experimental_option('prefs', {'profile.managed_default_content_settings.images': 2})
             self.driver = webdriver.Chrome(options= option)
             
         self.driver.implicitly_wait(10) 

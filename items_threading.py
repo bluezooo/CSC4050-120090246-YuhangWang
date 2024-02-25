@@ -1,29 +1,28 @@
-# Store website URL, change this 
-# url = "https://mall.jd.com/view_search-933997-0-99-1-24-1.html"
-# url = "https://mall.jd.com/view_search-2746730-23013324-99-1-20-1.html" 
-# url = input("Please input the store url")
-
-
 from selenium import webdriver
 from selenium.webdriver.common.by import By
 import time
 import pandas as pd
+import threading
+from threading import Semaphore
+
+sem = Semaphore(16) ## Maximum Thread
+filename = "items_threading"
+format = 'csv'
+
+url3 = "https://mall.jd.com/view_search-933997-0-99-1-24-1.html"
+url1 = "https://mall.jd.com/view_search-2746730-23013324-99-1-20-1.html" 
+url2 = "https://mall.jd.com/view_search-711685-0-99-1-24-1.html"
+url4 = "https://mall.jd.com/view_search-2031298-0-99-1-24-1.html"
+url_list = [url1, url2, url3, url4]
 
 
-#initialize driver
+
+#initialize driver options
 option = webdriver.ChromeOptions()
 # Not load pics to reduce loading time
 option.add_experimental_option('prefs', {'profile.managed_default_content_settings.images': 2})
-driver = webdriver.Chrome(options = option)
-driver.implicitly_wait(10)
 
-
-# init lists
-href_list = []
-commentsCount = []
-plus = []
-
-def get_page_items():
+def get_page_items(driver, href_list, commentsCount, plus):
 	#J_GoodsList > ul > li:nth-child(20) > div > div.jPic > a > img
 	lis = driver.find_elements(By.CSS_SELECTOR, '#J_GoodsList > ul > li')
 	for li in lis: 
@@ -42,19 +41,28 @@ def get_page_items():
 		except:
 			print('error in converting int')
       
-  
-
-def get_all_items(url):
+def get_all_items(idx, url, filename, format):
+    
+    # init lists and drivers
+	href_list = []
+	commentsCount = []
+	plus = []
+	driver = webdriver.Chrome(options = option)
+	driver.implicitly_wait(10)
+ 
 	driver.get(url)
-	get_page_items()
+	get_page_items(driver, href_list, commentsCount, plus)
 	number_of_pages = len(driver.find_elements(By.CSS_SELECTOR, '#J_GoodsList > div > a')) + 1
 	for i in range(number_of_pages -3):
 		driver.find_element(By.CSS_SELECTOR, "#J_GoodsList > div > a:nth-child(%d)"%(i+3)).click()
 		time.sleep(0.5)
-		get_page_items()
+		get_page_items(driver, href_list, commentsCount, plus)
 	driver.quit()
+	save(idx, filename, format, href_list, commentsCount, plus)
+	sem.release()
+	print(f'Thread {idx+1} finished')
 
-def save(filename, format):
+def save(idx, filename, format, href_list, commentsCount, plus):
     df = pd.DataFrame({
 		'URL': href_list,
 		'Comments': commentsCount,
@@ -65,6 +73,7 @@ def save(filename, format):
     for i in range(len(df)):
         if df.loc[i,'plus'] == "1":
             df.loc[i,'Comments'] = df.loc[i,'Comments']+"+"
+    filename+= str(idx+1)
     if format == 'xlsx' or format == 'xls':
         df.to_excel(f'{filename}.xlsx', index=False, columns=['URL', 'Comments'])
     elif format == 'csv':
@@ -76,7 +85,17 @@ def save(filename, format):
     else:
         print('Invalid Format')
 
-# Main
-get_all_items(url = "https://mall.jd.com/view_search-933997-0-99-1-24-1.html")
-save(filename = "items", format= 'csv')
-print("Total number of items: ", len(href_list))
+
+for idx in range(len(url_list)):
+    sem.acquire()
+    threading.Thread(target=get_all_items, args=(idx, url_list[idx], filename, format)).start()
+
+# wait for each process to complete
+for thread in threading.enumerate():
+    if thread is not threading.current_thread():
+        thread.join()
+
+
+
+
+
