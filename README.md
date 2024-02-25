@@ -39,7 +39,7 @@ save(filename = "items", format= 'csv')
   	- xlsx or csv: sorted, will contain detailed comments count for each item
   	- txt: sorted, contains only url of each item
 
-- `url` can not be a homepage of a store. Instead, it should contain detailed goods information like this:
+- `url` can not be a homepage of a store. Instead, it should contain detailed goods information of a store like this:
 
   <img src="images\ex1.png" alt="ex1" style="zoom: 55%;" />
 
@@ -72,6 +72,8 @@ save(filename = "items", format= 'csv')
      specificElement = wait.until(EC.presence_of_element_located(selector))
      ```
 
+
+5. Double check the url's page structure, make sure it is exactly the same format as the previous example
      
 
  
