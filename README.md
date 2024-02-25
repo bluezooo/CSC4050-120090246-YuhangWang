@@ -1,7 +1,7 @@
 
-For searching keywords or items in JD's homepage, go to directory **`search`**
+#### For searching keywords or items in JD's homepage, go to directory **`search`**
 
-## items.py
+# items.py
 
 #### Details
 
@@ -36,8 +36,8 @@ save(filename = "items", format= 'csv')
 
 - `format`: xlsx, csv or txt supported
 
-  	- xlsx or csv: sorted, will contain detailed comments count for each item
-  	- txt: sorted, contains only url of each item
+	- **xlsx or csv**: **sorted**, will contain url and detailed comments count for each item
+  - **txt**: **sorted**, contains **only url** of each item without its comment count
 
 - `url` can not be a homepage of a store. Instead, it should contain detailed goods information of a store like this:
 
@@ -74,6 +74,49 @@ save(filename = "items", format= 'csv')
 
 
 5. Double check the url's page structure, make sure it is exactly the same format as the previous example
-     
+   
 
- 
+
+
+ # items_threading.py 
+
+#### Details
+
+###### By assigning each url search to each threads, multiple webdrivers called
+
+Using multiple threads to concurrently search multiple threads and get multiple result files.
+
+Using `Semaphore` to manage the shared memory
+
+#### Usage
+
+##### necessary packages 
+
+```
+threading; time; selenium; pandas
+```
+
+##### Things to change
+
+```python
+sem = Semaphore(16) ## Maximum Thread
+filename = "items_threading"
+format = 'csv'
+
+url3 = "https://mall.jd.com/view_search-933997-0-99-1-24-1.html"
+url1 = "https://mall.jd.com/view_search-2746730-23013324-99-1-20-1.html" 
+url2 = "https://mall.jd.com/view_search-711685-0-99-1-24-1.html"
+url4 = "https://mall.jd.com/view_search-2031298-0-99-1-24-1.html"
+url_list = [url1, url2, url3, url4]
+```
+
+change the filename, format, and url list.
+
+For each url, there will be a file named by adding its index to the end of the `filename`
+
+##### Expected outputs
+
+<img src="D:\OneDrive - CUHK-Shenzhen\CUHKSZ7\Codes\jd\images\ex2.png" alt="ex2" style="zoom: 67%;" />
+
+
+
