@@ -41,7 +41,7 @@ save(filename = "items", format= 'csv')
 
 - `url` can not be a homepage of a store. Instead, it should contain detailed goods information of a store like this:
 
-  <img src="images\ex1.png" alt="ex1" style="zoom: 55%;" />
+  <img src="..\images\ex1.png" alt="ex1" style="zoom: 55%;" />
 
 
 
@@ -120,7 +120,7 @@ For each url, there will be a file named by adding its index to the end of the `
 
 ##### Expected outputs
 
-<img src="images\ex2.png" alt="ex2" style="zoom: 67%;" />
+<img src="..\images\ex2.png" alt="ex2" style="zoom: 67%;" />
 
 
 
