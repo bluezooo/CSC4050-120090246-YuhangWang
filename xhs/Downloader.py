@@ -13,24 +13,24 @@ class Downloader:
         self.download_queue.put(info_tuple)
 
     def download(self):
-        while self.running:
+        while self.running or not self.download_queue.empty():
             try:
-                username, video_link, title = self.download_queue.get(timeout=2)
+                username, index, video_link, title = self.download_queue.get(timeout=0.6)
                 self.username = username
                 if video_link == "":
                     print("invalid Video")
                     return 
                 if not os.path.exists(username):
                     os.mkdir(username)
-                file_name = f"{username}/{title}.mp4"
+                file_name = f"{username}/{index}_{title}.mp4"
+                if not os.path.exists(file_name):
+                    # print ("Downloading file:%s"%(file_name))
+                    r = self.download_video(video_link)
 
-                # print ("Downloading file:%s"%(file_name))
-                r = self.download_video(video_link)
-
-                with open(file_name, 'wb') as f: 
-                    for chunk in r.iter_content(chunk_size = 1024*1024): 
-                        if chunk: 
-                            f.write(chunk) 
+                    with open(file_name, 'wb') as f: 
+                        for chunk in r.iter_content(chunk_size = 1024*1024): 
+                            if chunk: 
+                                f.write(chunk) 
                 print ("%s downloaded!"%(file_name) )
             except Empty:
                 continue
@@ -56,4 +56,4 @@ class Downloader:
     
     def stop(self):
         self.running = False
-        print('All Downloaded!, check them under folder: ', self.username)
+        # print('All Downloaded!, check them under folder: ', self.username)

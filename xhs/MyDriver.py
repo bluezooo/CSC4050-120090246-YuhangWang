@@ -22,6 +22,8 @@ class MyDriver():
             option.add_experimental_option('excludeSwitches', ['enable-logging'])
             # option.add_argument("--headless")  # Runs Chrome in headless mode
             option.add_argument("--disable-dev-shm-usage")  # Overcome limited resource problems
+            option.add_argument("--disable-blink-features")
+            option.add_argument("--disable-blink-features=AutomationControlled")
             self.driver = webdriver.Chrome(options= option)
             
         self.driver.implicitly_wait(10) 
